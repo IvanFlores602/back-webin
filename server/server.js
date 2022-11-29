@@ -23,7 +23,6 @@ app.use((req, res, next) => {
 
 app.use(require('./routes/usuario'));
 app.use(require('./routes/email'));
-// app.use(require('./routes/administrador'));
 
 mongoose.connect('mongodb+srv://ivanlf:12345@cluster0.nnhuioe.mongodb.net/app',{
       useNewUrlParser: true,

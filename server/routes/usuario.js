@@ -86,10 +86,10 @@ var nodemailer = require('nodemailer');
             usrDB
         });
         var mailOptions = {
-            from: "Aplicacion Login de joan",
+            from: "Aplicacion Mercadito",
             to: usrDB.email,
             subject: "Registro exitoso",
-            text: "Te has registrado en una aplicacion de prueba tu correo fue aceptado",
+            text: "Tu correo fue aceptado por el equipo de Mercadito App",
           }
            transporter.sendMail(mailOptions, (error, info) =>{
             if(error) {

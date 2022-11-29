@@ -3,10 +3,6 @@ const mongoose = require ('mongoose');
 let Schema = mongoose.Schema;
 
 let usuarioSchema = new Schema({
-    //_id: {
-    //    type: String,
-    //    required: [true, 'El id es necesario']   
-   // },
     nombre: {
         type: String,
         required: [true, 'Es necesario el Nombre']
@@ -26,7 +22,7 @@ let usuarioSchema = new Schema({
     },
     rol: {
         type: String,
-        default: "3",
+        default: "1",
       },
 },{
     timestamps: {
