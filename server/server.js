@@ -7,6 +7,7 @@ var nodemailer = require('nodemailer');
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
 app.get('/',function(req, res){
   res.send('<h1>App Mercado libre Back </h1><br><hr>');
 });
