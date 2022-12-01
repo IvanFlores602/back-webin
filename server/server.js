@@ -8,6 +8,10 @@ var nodemailer = require('nodemailer');
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+var distDir = __dirname + "/dist/";
+
+app.use(express.static(distDir));
+
 app.get('/',function(req, res){
   res.send('<h1>App Mercado libre Back </h1><br><hr>');
 });
