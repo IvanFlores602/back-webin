@@ -5,16 +5,8 @@ const app = express();
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
 
-var distDir = __dirname + "/dist/";
 
-app.use(express.static(distDir));
-
-app.get('/',function(req, res){
-  res.send('<h1>App Mercado libre Back </h1><br><hr>');
-});
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
@@ -25,7 +17,12 @@ app.use((req, res, next) => {
   );
   next();
 });
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
+app.get('/',function(req, res){
+  res.send('<h1>App Mercado libre Back </h1><br><hr>');
+});
 app.use(require('./routes/usuario'));
 app.use(require('./routes/email'));
 
@@ -38,6 +35,9 @@ mongoose.connect('mongodb+srv://ivanlf:12345@cluster0.nnhuioe.mongodb.net/app',{
   console.log('La Base de Datos App esta en linea');
 });
 
-app.listen(process.env.PORT, ( )=> {
-  console.log('El puerto', process.env.PORT, ' esta en linea')
-});
+// app.listen(process.env.PORT, ( )=> {
+//   console.log('El puerto', process.env.PORT, ' esta en linea')
+// });
+app.listen(process.env.PORT || 3000, function(){
+  console.log("La base de datos escuchando por el puerto ", this.address().port, app.settings.env);
+  });
