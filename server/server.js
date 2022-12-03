@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-app.get('/',async function(req, res){
+app.get('/',async(req, res)=>{
   res.send('<h1>App Mercado libre Back </h1><br><hr>');
 });
 app.use(require('./routes/usuario'));
