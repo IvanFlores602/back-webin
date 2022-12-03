@@ -1,14 +1,17 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
-const Usuario = require('../models/usuario');
+const Administrador = require('../models/administrador.model');
 const app = express();
-var nodemailer = require('nodemailer');
 
-  app.get('/usuario', function (req, res) {
+ 
+  
+  app.get('/administrador', function (req, res) {
+
       let desde = req.query.desde || 0;
       let hasta = req.query.hasta || 100;
-    Usuario.find({})
+
+    Administrador.find({})
     .skip(Number(desde))
     .limit(Number(hasta))
     .exec((err, usuarios) =>{
@@ -19,6 +22,7 @@ var nodemailer = require('nodemailer');
                err 
            });
        } 
+
        res.json({
            ok:true,
            msg: 'Lista de usuarios obtenida con exito',
@@ -28,10 +32,10 @@ var nodemailer = require('nodemailer');
     });
   });
 
-  app.get('/usuario/:email', function (req, res) {
+  app.get('/administrador/:id', function (req, res) {
 
-    let idusuario = req.params.email;
-  Usuario.findOne({email: idusuario})
+    let idusuario = req.params.id;
+  Usuario.findById({_id: idusuario})
   .exec((err, usuarios) =>{
      if(err) {
          return res.status(400).json({
@@ -50,28 +54,18 @@ var nodemailer = require('nodemailer');
   });
 });
   
-  app.post('/usuario', function (req, res) {
+  app.post('/administrador', function (req, res) {
     let body = req.body;
-    let usr = new Usuario({
-        //_id: req.body._id,
+    let usr = new Administrador({
+        _id: req.body._id,
         nombre: body.nombre,
         apellidos: req.body.apellidos,
         email: body.email,
+        direccion: body.direccion,
+        curp: body.curp,
         password: body.password,
-        rol: body.rol
     });
-    var transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true, // true for 465, false for other ports
-        auth: {
-            user: 'ip5978831@gmail.com', 
-            pass: 'yjgokjompnhdrveo', 
-        },
-      });
 
-      
-    
     usr.save((err, usrDB) => {
         if(err) {
             return res.status(400).json({
@@ -85,26 +79,12 @@ var nodemailer = require('nodemailer');
             msg: 'Usuario insertado con exito',
             usrDB
         });
-        var mailOptions = {
-            from: "Aplicacion Mercadito",
-            to: usrDB.email,
-            subject: "Registro exitoso",
-            text: "Tu correo fue aceptado por el equipo de Mercadito App",
-          }
-           transporter.sendMail(mailOptions, (error, info) =>{
-            if(error) {
-                res.status(500).send(error.message);
-            }else{
-                console.log("emailEnviado");
-                res.status(200).jsonp(req.body);
-            }
-           })
     });
   });
   
-  app.put('/usuario/:id', function (req, res) {
+  app.put('/administrador/:id', function (req, res) {
     let id = req.params.id
-    let body = _.pick(req.body,['rol']);
+    let body = _.pick(req.body,['nombre','apellidos','email']);
 
     Usuario.findByIdAndUpdate(id, body, { new:true, runValidators: true, context: 'query' }, (err, usrDB) =>{
         if(err) {
@@ -123,10 +103,10 @@ var nodemailer = require('nodemailer');
     });
   });
   
-  app.delete('/usuario/:id', function (req, res) {
-     let id = req.params.id;
+  app.delete('/administrador/:id', function (req, res) {
+      let id =  req.params.id;
 
-      Usuario.deleteOne({ _id: id }, (err, usuarioBorrado) =>{
+      Usuario.findByIdAndUpdate(id, { estado: false }, { new: true, runValidators: true, context: 'query' }, (err, usrDB) => {
         if(err) {
             return res.status(400).json({
                 ok: false,
@@ -138,7 +118,7 @@ var nodemailer = require('nodemailer');
         res.json({
             ok: true,
             msg: 'Usuario eliminado con exito',
-            usuarioBorrado
+            usrDB
         });
       });
   });

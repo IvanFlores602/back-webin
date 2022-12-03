@@ -81,7 +81,7 @@ usr.save((err, usrDB) => {
             to: usrDB.email,
             subject: "Se ha registro con exitoso",
             text: "confirmacion",
-            html: "<a  href='http://localhost:4200/conf'>Confirma el registro del usuario</a></li>",
+            html: "<a href='https://frontwebin.vercel.app/confirmar'>Confirma el registro del usuario</a>",
           }
            transporter.sendMail(mailOptions, (error, info) =>{
             if(error) {
